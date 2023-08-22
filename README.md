@@ -9,27 +9,27 @@
 ## Command Line Arguments and Description
 
 | Command | Description |
-| --- | --- |
+| :---: | :---: |
 | Required |
-| -o | \<project directory\> |
-| -t | \<SRA accession list.txt or folder of raw fastq files\> |
-| -c | \<filenames for each fastq.csv\>|
-| -g | \<reference genome.fa> |
-| -i | \<reference genome annotation.gff3> |
-| -l | \<read length\> |
-| -s | \<genome size in bp\> |
-| -e | \<genome annotation generator, see below for abbreviation code\>|
+| -o | \<project directory\> <br> where you want your entire hamr project to be |
+| -t | \<SRA accession list.txt\> or \<folder of raw fastq files\> <br> a txt file of all srr accession code to your desired reads or a path containing them |
+| -c | \<filenames for each fastq.csv\> <br> a csv file that corresponds each srr code (or name of fastq file) to your desired nomenclature for each read |
+| -g | \<reference genome.fa> <br> a fasta file of the genome of the model organism |
+| -i | \<reference genome annotation.gff3> <br> a gff3 file of the genome of the model organism, note we require gff3 instead of gtf |
+| -l | \<read length\> <br> an integer, the read length of this sequencing experiment, if non-unanimous use the shortest length |
+| -s | \<genome size in bp\> <br> an integer, the number of base pairs of the genome of this model organism |
+| -e | \<genome annotation generator code\> <br> see below for abbreviation code, one code per organism/cultivar |
 | Optional |
-| -a | \[use TopHat2 instead of STAR, default use STAR\]|
-| -b | \[Tophat library choice: fr-unstranded, fr-firststrand, fr-secondstrand, default=fr-firststrand\]|
-| -f | \[filter, default=filter_SAM_number_hits.pl\]|
-| -Q | \[HAMR: minimum qualuty score, default=30\]|
-| -C | \[HAMR: minimum coveragem default=50\]|
-| -E | \[HAMR: sequencing error, default=0.01\]|
-| -P | \[HAMR: maximum p-value, default=1\]|
-| -F | \[HAMR: maximum fdr, default=0.05\]|
-| -m | \[HAMR model, default=euk_trna_mods.Rdata\]|
-| -n | \[number of threads, default=4\]|
+| -a | \[use Tophat2 instead of STAR\] <br> default uses STAR |
+| -b | \[Tophat2 library choice: fr-unstranded, fr-firststrand, fr-secondstrand\] <br> default=fr-firststrand |
+| -f | \[filter\] <br> default=filter_SAM_number_hits.pl |
+| -Q | \[HAMR: minimum qualuty score\] <br> default=30 |
+| -C | \[HAMR: minimum coverage\] <br> default=50 |
+| -E | \[HAMR: sequencing error\] <br> default=0.01 |
+| -P | \[HAMR: maximum p-value\] <br> default=1 |
+| -F | \[HAMR: maximum FDR\] <br> default=0.05 |
+| -m | \[HAMR model\] <br> default=euk_trna_mods.Rdata |
+| -n | \[number of threads\] <br> default=4 |
 | -h | \[help message\]|
 
 ## Annotation Generator Code
@@ -62,5 +62,16 @@ wget -qO- https://ftp.ensemblgenomes.ebi.ac.uk/pub/plants/release-57/gff3/arabid
 
 Run HAMRbox
 ```
-docker run --rm -v $(pwd):/working-dir -o /working-dir harrlol/hamrbox -t ~/demo/PRJNA596803_list.txt -c ~/demo/PRJNA596803_filenames.csv -g ~/path/to/genomefiles -l 50 -s 135000000
+docker run \
+  --rm \
+  -v $(pwd):/working-dir \
+  -o /working-dir \
+  harrlol/hamrbox \
+  -t ~/demo/PRJNA596803_list.txt \
+  -c ~/demo/PRJNA596803_filenames.csv \
+  -g ~/path/to/genome.fasta \
+  -i ~/path/to/genomeannotation.gff3 \
+  -l 50 \
+  -s 135000000 \
+  -e AT
 ```
